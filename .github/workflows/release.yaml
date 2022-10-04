@@ -9,8 +9,6 @@ on:
 
 jobs:
   create-release:
-    needs:
-      - setup
     name: Create Release
     runs-on: ubuntu-latest
     outputs:
@@ -22,8 +20,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ needs.setup.outputs.VERSION }}
-          release_name: Release ${{ needs.setup.outputs.VERSION }}
+          tag_name: ${{  github.ref_name }}
+          release_name: ${{  github.ref_name }}
           draft: true
           prerelease: false
 
