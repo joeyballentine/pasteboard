@@ -45,7 +45,7 @@ jobs:
       - name: Install dependencies
         shell: bash
         run: pip install poetry \
-          brew install --cask gcc-aarch64-embedded
+          brew install gcc
 
       - name: Build wheel
         if: matrix.python-version != 3.9
