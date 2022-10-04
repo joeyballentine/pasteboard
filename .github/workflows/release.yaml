@@ -26,54 +26,118 @@ jobs:
           prerelease: false
 
   build-release:
-    needs: [create-release]
     name: build-release
-    env:
-      CIBW_ARCHS_MACOS: x86_64 arm64
     runs-on: macos-latest
     strategy:
       matrix:
-        python-version:
-          [
-            "cp38-macosx_universal2",
-            "cp39-macosx_universal2",
-            "cp310-macosx_universal2",
-            "cp311-macosx_universal2",
-          ]
+        python-version: [3.6, 3.7, 3.8, 3.9, 3.10, 3.11]
+
     steps:
       - name: Create artifacts directory
         shell: bash
         run: mkdir artifacts
       - name: Checkout repository
         uses: actions/checkout@v2
-      - name: Set up Python
-        uses: actions/setup-python@v4
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v1
         with:
-          python-version: "3.10"
-          architecture: x64
-      - name: Check Python version
-        run: |
-          python --version
+          python-version: ${{ matrix.python-version }}
       - name: Install dependencies
-        run: |
-          pip install cibuildwheel
-      - name: Build wheel
-        run: python -m cibuildwheel --output-dir dist
+        shell: bash
+        run: pip install poetry
 
-      - name: Package
+      - name: Build wheel
+        if: matrix.python-version != 3.9
+        shell: bash
+        run: poetry build --format "wheel"
+      - name: Build wheel and sdist
+        if: matrix.python-version == 3.9
+        shell: bash
+        run: poetry build
+
+      - name: Resolve wheel name
+        id: resolve_wheel
+        shell: bash
         run: |
-          mkdir -p pasteboard_test
-          cp -r dist/* pasteboard_test
-          zip -9 -r pasteboard_test_${{ matrix.python-version }}.zip pasteboard_test
-      - name: Upload
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          wheel_path="$(echo dist/pasteboard-*.whl)"
+          echo "::set-output name=path::$wheel_path"
+          echo "wheel path: $wheel_path"
+          wheel_name="${wheel_path##*/}"
+          echo "::set-output name=name::$wheel_name"
+          echo "wheel name: $wheel_name"
+      - name: Upload wheel to artifacts
+        uses: actions/upload-artifact@v2
         with:
-          upload_url: ${{ needs.create-release.outputs.upload_url }}
-          asset_path: pasteboard_test_${{ matrix.python-version }}.zip
-          asset_name: pasteboard_test_${{ matrix.python-version }}.zip
-          asset_content_type: application/zip
+          name: artifacts
+          path: ${{ steps.resolve_wheel.outputs.path }}
+
+      - name: Resolve tar.gz name
+        id: resolve_targz
+        if: matrix.python-version == 3.9
+        shell: bash
+        run: |
+          targz_path="$(echo dist/pasteboard-*.tar.gz)"
+          echo "::set-output name=path::$targz_path"
+          echo "tar.gz path: $targz_path"
+          targz_name="${targz_path##*/}"
+          echo "::set-output name=name::$targz_name"
+          echo "tar.gz name: $targz_name"
+      - name: Upload tar.gz to artifacts
+        if: matrix.python-version == 3.9
+        uses: actions/upload-artifact@v2
+        with:
+          name: artifacts
+          path: ${{ steps.resolve_targz.outputs.path }}
+
+  # build-release:
+  #   needs: [create-release]
+  #   name: build-release
+  #   env:
+  #     CIBW_ARCHS_MACOS: x86_64 arm64
+  #   runs-on: macos-latest
+  #   strategy:
+  #     matrix:
+  #       python-version:
+  #         [
+  #           "cp38-macosx_universal2",
+  #           "cp39-macosx_universal2",
+  #           "cp310-macosx_universal2",
+  #           "cp311-macosx_universal2",
+  #         ]
+  #   steps:
+  #     - name: Create artifacts directory
+  #       shell: bash
+  #       run: mkdir artifacts
+  #     - name: Checkout repository
+  #       uses: actions/checkout@v2
+  #     - name: Set up Python
+  #       uses: actions/setup-python@v4
+  #       with:
+  #         python-version: "3.10"
+  #         architecture: x64
+  #     - name: Check Python version
+  #       run: |
+  #         python --version
+  #     - name: Install dependencies
+  #       run: |
+  #         pip install cibuildwheel
+  #     - name: Build wheel
+  #       run: python -m cibuildwheel --output-dir dist
+
+  #     - name: Package
+  #       run: |
+  #         mkdir -p pasteboard_test
+  #         cp -r dist/* pasteboard_test
+  #         zip -9 -r pasteboard_test_${{ matrix.python-version }}.zip pasteboard_test
+  #     - name: Upload
+  #       uses: actions/upload-release-asset@v1
+  #       env:
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #       with:
+  #         upload_url: ${{ needs.create-release.outputs.upload_url }}
+  #         asset_path: pasteboard_test_${{ matrix.python-version }}.zip
+  #         asset_name: pasteboard_test_${{ matrix.python-version }}.zip
+  #         asset_content_type: application/zip
 
   # publish-release:
   #   name: publish-release
