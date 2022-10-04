@@ -44,9 +44,9 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - name: Install dependencies
         shell: bash
-        run: pip install poetry \
-          brew install gcc
-
+        run: pip install poetry
+      - name: Install GCC
+        run: brew install gcc
       - name: Build wheel
         if: matrix.python-version != 3.9
         shell: bash
