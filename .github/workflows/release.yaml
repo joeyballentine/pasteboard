@@ -1,8 +1,8 @@
 name: Release
 on:
   push:
-    # branches:
-    #   - workflow_release
+    branches:
+      - CI-testing
     tags:
       # - 'v[0-9]+.[0-9]+.[0-9]+'
       - "*"
@@ -29,7 +29,7 @@ jobs:
     needs: [create-release]
     name: build-release
     env:
-      CIBW_ARCHS_MACOS: universal2
+      CIBW_ARCHS_MACOS: x86_64 arm64
     runs-on: macos-latest
     strategy:
       matrix:
