@@ -93,9 +93,6 @@ jobs:
   build-release:
     needs: [create-release]
     name: build-release
-    env:
-      CIBW_ARCHS_MACOS: x86_64 arm64
-    runs-on: macos-latest
     strategy:
       matrix:
         python-version:
@@ -105,6 +102,10 @@ jobs:
             "cp310-macosx_universal2",
             "cp311-macosx_universal2",
           ]
+    env:
+      CIBW_ARCHS_MACOS: x86_64 arm64
+      CIBW_BUILD: ${{ matrix.python-version }}
+    runs-on: macos-latest
     steps:
       - name: Create artifacts directory
         shell: bash
