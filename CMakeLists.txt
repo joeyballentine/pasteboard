@@ -9,8 +9,10 @@ add_subdirectory("src/pasteboard")
 
 include_directories("src/pasteboard")
 
+add_library(pasteboard SHARED "src/pasteboard.m")
+
 # Add extra linking args: "-framework", "AppKit"
-add_link_options("-framework" "AppKit")
+add_link_options("-framework AppKit")
 
 find_package(PythonLibs REQUIRED)
 include_directories(${PYTHON_INCLUDE_DIRS})
