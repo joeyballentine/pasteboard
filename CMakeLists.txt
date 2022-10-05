@@ -3,4 +3,6 @@ set(CMAKE_FIND_LIBRARY_SUFFIXES ".m")
 
 project(pasteboard)
 
-add_subdirectory(src/pasteboard)
+add_subdirectory("src/pasteboard")
+
+include_directories("src/pasteboard")
