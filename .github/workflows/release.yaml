@@ -102,7 +102,8 @@ jobs:
             "cp310-macosx_universal2",
           ]
     env:
-      CIBW_ARCHS_MACOS: x86_64 arm64
+      CIBW_ARCHS: universal2
+      CIBW_ARCHS_MACOS: universal2
       CIBW_BUILD: ${{ matrix.python-version }}
     runs-on: macos-latest
     steps:
