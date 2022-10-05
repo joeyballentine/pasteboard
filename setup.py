@@ -31,8 +31,8 @@ class CMakeBuild(build_ext):
             # not used on MSVC, but no harm
             "-DCMAKE_BUILD_TYPE={}".format(cfg),
             "-DCMAKE_CROSSCOMPILING=ON",
-            "-DCMAKE_OSX_ARCHITECTURES=arm64'x86_64",
-            "-DCMAKE_OSX_DEPLOYMENT_TARGET=10.9",
+            "-DCMAKE_OSX_ARCHITECTURES=arm64;x86_64",
+            # "-DCMAKE_OSX_DEPLOYMENT_TARGET=10.9",
         ]
 
         build_args = []
@@ -69,7 +69,7 @@ with io.open("README.md", encoding="utf-8") as h:
     long_description = h.read()
 
 setup(
-    name="ncnn_vulkan",
+    name="pasteboard",
     version="2022.10.4",
     author="Toby Fleming",
     author_email="tobywf@users.noreply.github.com",
