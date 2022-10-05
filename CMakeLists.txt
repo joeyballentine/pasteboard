@@ -1,12 +1,15 @@
 cmake_minimum_required(VERSION 3.13 FATAL_ERROR)
 set(CMAKE_FIND_LIBRARY_SUFFIXES ".m")
 
-project(pasteboard)
+project(pasteboard LANGUAGES CXX OBJC)
 
 add_subdirectory("src/pasteboard")
 
 include_directories("src/pasteboard")
 target_link_libraries(pasteboard "src/pasteboard")
+
+# Add extra linking args: "-framework", "AppKit"
+add_link_options("-framework" "AppKit")
 
 find_package(PythonLibs REQUIRED)
 include_directories(${PYTHON_INCLUDE_DIRS})
