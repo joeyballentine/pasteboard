@@ -6,6 +6,7 @@ project(pasteboard)
 add_subdirectory("src/pasteboard")
 
 include_directories("src/pasteboard")
+target_link_libraries(pasteboard "src/pasteboard")
 
 find_package(PythonLibs REQUIRED)
 include_directories(${PYTHON_INCLUDE_DIRS})
