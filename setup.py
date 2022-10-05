@@ -32,7 +32,7 @@ class CMakeBuild(build_ext):
             "-DCMAKE_BUILD_TYPE={}".format(cfg),
             "-DCMAKE_CROSSCOMPILING=ON",
             "-DCMAKE_OSX_ARCHITECTURES=x86_64",
-            "-DCMAKE_OSX_DEPLOYMENT_TARGET=10.13",
+            "-DCMAKE_OSX_DEPLOYMENT_TARGET=11.0",
         ]
 
         build_args = []
