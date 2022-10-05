@@ -112,6 +112,12 @@ jobs:
         run: mkdir artifacts
       - name: Checkout repository
         uses: actions/checkout@v2
+      - name: Setup cmake
+        uses: jwlawson/actions-setup-cmake@v1.12
+        with:
+          cmake-version: "3.24.x"
+      - name: Use cmake
+        run: cmake --version
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
