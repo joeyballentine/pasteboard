@@ -8,6 +8,6 @@ add_library(pasteboard SHARED pasteboard.m)
 find_library(APPKIT_LIB AppKit)
 target_link_libraries(pasteboard ${APPKIT_LIB})
 
-find_package(Python COMPONENTS Development REQUIRED)
+find_package(Python3 COMPONENTS Interpreter Development)
 include_directories(${PYTHON_INCLUDE_DIRS})
 target_link_libraries(pasteboard ${PYTHON_LIBRARIES})
