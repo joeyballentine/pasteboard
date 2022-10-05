@@ -31,7 +31,7 @@ class CMakeBuild(build_ext):
             # not used on MSVC, but no harm
             "-DCMAKE_BUILD_TYPE={}".format(cfg),
             "-DCMAKE_CROSSCOMPILING=ON",
-            "-DCMAKE_OSX_ARCHITECTURES=arm64",
+            "-DCMAKE_OSX_ARCHITECTURES=x86_64",
             "-DCMAKE_OSX_DEPLOYMENT_TARGET=10.13",
         ]
 
