@@ -4,6 +4,8 @@ project(pasteboard LANGUAGES CXX OBJC)
 
 add_library(pasteboard SHARED pasteboard.m)
 
+target_link_libraries(program "-framework AppKit")
+
 find_package(PythonLibs REQUIRED)
 include_directories(${PYTHON_INCLUDE_DIRS})
 target_link_libraries(pasteboard ${PYTHON_LIBRARIES})
