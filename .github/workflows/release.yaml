@@ -96,14 +96,10 @@ jobs:
     strategy:
       matrix:
         python-version:
-          [
-            "cp38-macosx_universal2",
-            "cp39-macosx_universal2",
-            "cp310-macosx_universal2",
-          ]
+          ["cp38-macosx_arm64", "cp39-macosx_arm64", "cp310-macosx_arm64"]
     env:
-      CIBW_ARCHS: universal2
-      CIBW_ARCHS_MACOS: universal2
+      CIBW_ARCHS: arm64
+      CIBW_ARCHS_MACOS: arm64
       CIBW_BUILD: ${{ matrix.python-version }}
       CIBW_ENVIRONMENT: CFLAGS='-g -Wall -Wextra -Wpedantic -Werror' CXXFLAGS='-Wall -Wextra -Wpedantic -Werror'
     runs-on: macos-latest
