@@ -9,7 +9,9 @@ add_subdirectory("src/pasteboard")
 
 include_directories("src/pasteboard")
 
-target_link_libraries(program "-framework AppKit")
+# target_link_libraries(pasteboard "-framework AppKit")
+find_library(APPKIT_LIB AppKit)
+target_link_libraries(pasteboard PRIVATE ${APPKIT_LIB})
 
 find_package(PythonLibs REQUIRED)
 include_directories(${PYTHON_INCLUDE_DIRS})
