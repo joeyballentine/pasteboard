@@ -95,8 +95,7 @@ jobs:
     name: build-release
     strategy:
       matrix:
-        python-version:
-          ["cp38-macosx_arm64", "cp39-macosx_arm64", "cp310-macosx_arm64"]
+        python-version: ["cp39-macosx_arm64", "cp310-macosx_arm64"]
     env:
       CIBW_ARCHS: arm64
       CIBW_ARCHS_MACOS: arm64
