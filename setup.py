@@ -3,10 +3,11 @@ import os
 import subprocess
 import sys
 
+
 from setuptools import Extension, find_packages, setup
 from setuptools.command.build_ext import build_ext
-from distutils.sysconfig import get_python_inc
-import distutils.sysconfig as sysconfig;
+import sysconfig
+
 
 class CMakeExtension(Extension):
     def __init__(self, name, sourcedir=""):
@@ -29,9 +30,8 @@ class CMakeBuild(build_ext):
             "-DCMAKE_LIBRARY_OUTPUT_DIRECTORY={}".format(extdir),
             "-DCMAKE_LIBRARY_OUTPUT_DIRECTORY_RELEASE={}".format(extdir),
             "-DPYTHON_EXECUTABLE={}".format(sys.executable),
-            '-DPYTHON_INCLUDE_DIR={}'.format(get_python_inc())
-            "-DPYTHON_LIBRARY={}".format(sysconfig.get_config_var('LIBDIR'))
-            # not used on MSVC, but no harm
+            "-DPYTHON_INCLUDE_DIR={}".format(sysconfig.get_path("include")),
+            "-DPYTHON_LIBRARY={}".format(sysconfig.get_config_var("LIBDIR")),
             "-DCMAKE_BUILD_TYPE={}".format(cfg),
             "-DCMAKE_CROSSCOMPILING=ON",
             "-DCMAKE_OSX_ARCHITECTURES=x86_64;arm64",
